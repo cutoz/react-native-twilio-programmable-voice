@@ -3,6 +3,7 @@ package com.hoxfon.react.RNTwilioVoice;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
+import com.facebook.react.BuildConfig;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -19,6 +20,7 @@ public class EventManager {
     public static final String EVENT_DEVICE_READY = "deviceReady";
     public static final String EVENT_DEVICE_NOT_READY = "deviceNotReady";
     public static final String EVENT_CONNECTION_DID_CONNECT = "connectionDidConnect";
+    public static final String ON_STATS_RECEIVED = "onStatsReceived";
     public static final String EVENT_CONNECTION_DID_DISCONNECT = "connectionDidDisconnect";
     public static final String EVENT_DEVICE_DID_RECEIVE_INCOMING = "deviceDidReceiveIncoming";
     public static final String EVENT_CALL_STATE_RINGING = "callStateRinging";

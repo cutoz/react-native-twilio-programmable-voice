@@ -20,8 +20,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.AssertionException;
@@ -43,16 +41,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.twilio.voice.AcceptOptions;
-import com.twilio.voice.Call;
-import com.twilio.voice.CallException;
-import com.twilio.voice.CallInvite;
-import com.twilio.voice.CancelledCallInvite;
-import com.twilio.voice.ConnectOptions;
-import com.twilio.voice.LogLevel;
-import com.twilio.voice.RegistrationException;
-import com.twilio.voice.RegistrationListener;
-import com.twilio.voice.Voice;
+import com.twilio.voice.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -270,6 +259,9 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
                     params.putString("call_state", call.getState().name());
                     params.putString("call_from", call.getFrom());
                     params.putString("call_to", call.getTo());
+
+                    call.getStats(new TwilioRNStatsListener(eventManager));
+
                     String caller = "Show call details in the app";
                     if (!toName.equals("")) {
                         caller = toName;
@@ -452,7 +444,7 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
     }
 
     // removed @Override temporarily just to get it working on different versions of RN
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Ignored, required to implement ActivityEventListener for RN 0.33
     }
 
@@ -470,12 +462,6 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
                 callAccepted = false;
                 SoundPoolManager.getInstance(getReactApplicationContext()).playRinging();
 
-                if (getReactApplicationContext().getCurrentActivity() != null) {
-                    Window window = getReactApplicationContext().getCurrentActivity().getWindow();
-                    window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    );
-                }
                 // send a JS event ONLY if the app's importance is FOREGROUND or SERVICE
                 // at startup the app would try to fetch the activeIncoming calls
                 int appImportance = callNotificationManager.getApplicationImportance(getReactApplicationContext());
