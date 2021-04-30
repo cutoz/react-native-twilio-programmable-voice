@@ -260,7 +260,7 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
                     params.putString("call_from", call.getFrom());
                     params.putString("call_to", call.getTo());
 
-                    call.getStats(new TwilioRNStatsListener(eventManager));
+                    // call.getStats(new TwilioRNStatsListener(eventManager));
 
                     String caller = "Show call details in the app";
                     if (!toName.equals("")) {
