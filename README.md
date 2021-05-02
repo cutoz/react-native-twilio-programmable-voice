@@ -49,7 +49,7 @@ Allow Android to use the built in Android telephony service to make and receive 
 
 ### Twilio Programmable Voice SDK
 
-- Android 4.5.0
+- Android 5.6.3
 - iOS 5.2.0
 
 ### Breaking changes in v4.0.0
