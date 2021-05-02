@@ -21,21 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
-import com.facebook.react.bridge.AssertionException;
-import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.ReadableMap;
-
-import com.facebook.react.bridge.ActivityEventListener;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.facebook.react.bridge.ReadableType;
-import com.facebook.react.bridge.WritableMap;
-
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -788,11 +774,14 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
                 @Override
                 public void onStats(@NonNull List<StatsReport> statsReports) {
                     WritableMap map = TwilioRNStatsManager.getStats(statsReports);
+                    map.putString("status", "call_connected");
                     promise.resolve(map);
                 }
             });
         } else {
-            promise.resolve(null);
+            WritableMap map = new WritableNativeMap();
+            map.putString("status", "no_call_connected");
+            promise.resolve(map);
         }
     }
 
