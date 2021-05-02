@@ -260,7 +260,7 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
                     params.putString("call_from", call.getFrom());
                     params.putString("call_to", call.getTo());
 
-                    // call.getStats(new TwilioRNStatsListener(eventManager));
+                     call.getStats(new TwilioRNStatsListener(eventManager));
 
                     String caller = "Show call details in the app";
                     if (!toName.equals("")) {
@@ -558,6 +558,11 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
         WritableMap params = Arguments.createMap();
         params.putBoolean("initialized", true);
         promise.resolve(params);
+    }
+
+    @ReactMethod
+    public String sayHi() {
+        return "Hi";
     }
 
     private void clearIncomingNotification(String callSid) {
