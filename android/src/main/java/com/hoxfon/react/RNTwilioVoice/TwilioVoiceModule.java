@@ -44,6 +44,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.twilio.voice.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.hoxfon.react.RNTwilioVoice.EventManager.EVENT_CONNECTION_DID_CONNECT;
@@ -773,6 +774,26 @@ public class TwilioVoiceModule extends ReactContextBaseJavaModule implements Act
             return;
         }
         promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void getActiveCallStats(Promise promise) {
+        if (activeCall != null) {
+
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Active call found state = "+activeCall.getState());
+            }
+
+            activeCall.getStats(new StatsListener() {
+                @Override
+                public void onStats(@NonNull List<StatsReport> statsReports) {
+                    WritableMap map = TwilioRNStatsManager.getStats(statsReports);
+                    promise.resolve(map);
+                }
+            });
+        } else {
+            promise.resolve(null);
+        }
     }
 
     @ReactMethod
